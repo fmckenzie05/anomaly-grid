@@ -6,21 +6,57 @@ import Image from 'next/image'
 
 // ─── Matrix Rain Effect ───
 function MatrixRain() {
+  const glyphSets = [
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    'abcdefghijklmnopqrstuvwxyz',
+    '0123456789',
+    'アイウエオカキクケコサシスセソタチツテトナニヌネノマミムメモラリルレロワヲン',
+    'あいうえおかきくけこさしすせそたちつてとなにぬねのまみむめもやゆよらりるれろわをん',
+    'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ',
+    'αβγδεζηθικλμνξοπρστυφχψω',
+    'אבגדהוזחטיכלמנסעפצקרשת',
+    'ابتثجحخدذرزسشصضطظعغفقكلمنهوي',
+    '가나다라마바사아자차카타파하',
+    'अआइईउऊऋएऐओऔकखगघचछजझटठडढतथदधनपफबभमयरलवशषसह',
+    'กขคงจฉชซญดตถทธนบปผพฟภมยรลวศษสห',
+    '!@#$%^&*()_+-=[]{}<>?/|~:;.,█▓▒░◢◣◤◥◉◎◌◍◈',
+  ]
+
+  const streams = Array.from({ length: 52 }, (_, i) => {
+    const glyphPool = glyphSets[i % glyphSets.length]
+    const rows = 34 + (i % 10)
+    const text = Array.from({ length: rows }, (_, row) => {
+      const char = glyphPool[Math.floor(Math.random() * glyphPool.length)]
+      const bright = row === 0 || (row % 9 === 0 && Math.random() > 0.55)
+      return bright ? `█${char}` : char
+    }).join('\n')
+
+    return {
+      left: `${i * 1.95}%`,
+      duration: `${4 + (i % 8) * 0.8 + Math.random() * 2.5}s`,
+      delay: `${Math.random() * 6}s`,
+      fontSize: `${10 + (i % 4)}px`,
+      text,
+      color: i % 7 === 0 ? 'text-cyan-300/70' : i % 5 === 0 ? 'text-emerald-300/65' : 'text-green-400/70',
+    }
+  })
+
   return (
     <div className="absolute inset-0 overflow-hidden opacity-[0.07] pointer-events-none">
-      {Array.from({ length: 40 }, (_, i) => (
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-500/[0.02] to-transparent" />
+      {streams.map((stream, i) => (
         <div
           key={i}
-          className="absolute text-green-400 font-mono text-xs leading-none select-none"
+          className={`absolute font-mono leading-none select-none whitespace-pre ${stream.color}`}
           style={{
-            left: `${i * 2.5}%`,
-            animation: `matrix-fall ${3 + Math.random() * 7}s linear infinite`,
-            animationDelay: `${Math.random() * 5}s`,
+            left: stream.left,
+            fontSize: stream.fontSize,
+            animation: `matrix-fall ${stream.duration} linear infinite`,
+            animationDelay: stream.delay,
+            textShadow: '0 0 8px rgba(34,197,94,0.18), 0 0 16px rgba(34,197,94,0.08)',
           }}
         >
-          {Array.from({ length: 30 }, () =>
-            String.fromCharCode(0x30A0 + Math.random() * 96)
-          ).join('\n')}
+          {stream.text}
         </div>
       ))}
     </div>
@@ -164,6 +200,73 @@ function LiveStatBar() {
   )
 }
 
+function DemoShots() {
+  const shots = [
+    {
+      title: 'THREAT OPERATIONS',
+      subtitle: 'Live globe, flat map, and confusion matrix views',
+      href: '/dashboard',
+      image: '/dashboard-preview.svg',
+      accent: 'from-cyan-500/20 via-cyan-500/5 to-transparent',
+    },
+    {
+      title: 'THREAT INTEL CENTER',
+      subtitle: 'MITRE ATT&CK, CVE, CWE, CAPEC, IOC feed correlation',
+      href: '/dashboard/intel',
+      image: '/intel-preview.svg',
+      accent: 'from-orange-500/20 via-orange-500/5 to-transparent',
+    },
+    {
+      title: 'STIG SCANNER',
+      subtitle: 'Compliance checks, control gaps, and vuln context',
+      href: '/dashboard/stig-scanner',
+      image: '/stig-preview.svg',
+      accent: 'from-emerald-500/20 via-emerald-500/5 to-transparent',
+    },
+    {
+      title: 'MISSION CONTROL',
+      subtitle: 'Tenant oversight, platform health, and usage visibility',
+      href: '/mission-control',
+      image: '/mission-control-preview.svg',
+      accent: 'from-pink-500/20 via-pink-500/5 to-transparent',
+    },
+  ]
+
+  return (
+    <section className="w-full max-w-7xl mt-16 px-4">
+      <div className="flex items-end justify-between gap-4 mb-6 flex-wrap">
+        <div>
+          <p className="text-[11px] font-mono tracking-[0.3em] uppercase text-cyan-500/60 mb-2">// live product surfaces</p>
+          <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight">More shots from inside the platform</h2>
+        </div>
+        <p className="text-sm text-gray-600 max-w-xl">A few more demo surfaces so the homepage feels more like a real product showcase, not just a hero screen.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {shots.map((shot) => (
+          <Link
+            key={shot.title}
+            href={shot.href}
+            className="group relative overflow-hidden rounded-2xl border border-[#141620] bg-[#05070c]/80 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300"
+          >
+            <div className={`absolute inset-0 bg-gradient-to-br ${shot.accent} opacity-60 group-hover:opacity-90 transition-opacity`} />
+            <div className="relative aspect-[16/10] border-b border-[#141620] overflow-hidden">
+              <Image src={shot.image} alt={shot.title} fill className="object-cover object-center opacity-90 group-hover:scale-[1.02] transition-transform duration-500" />
+            </div>
+            <div className="relative p-5">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <h3 className="text-sm font-mono font-bold tracking-[0.18em] text-white">{shot.title}</h3>
+                <span className="text-cyan-400 text-xs font-mono">OPEN ↗</span>
+              </div>
+              <p className="text-sm text-gray-400 leading-relaxed">{shot.subtitle}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export default function LandingPage() {
   return (
     <main className="relative min-h-screen bg-[#020204] overflow-hidden">
@@ -254,6 +357,8 @@ export default function LandingPage() {
 
         {/* Terminal */}
         <TerminalTyper />
+
+        <DemoShots />
 
         {/* Footer */}
         <div className="mt-8 text-center">

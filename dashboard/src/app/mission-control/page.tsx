@@ -37,8 +37,8 @@ export default function MissionControlPage() {
       {/* Nav */}
       <nav className="border-b border-[#141620] px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Shield className="w-4 h-4 text-white" />
+          <div className="w-8 h-8 rounded-lg overflow-hidden">
+            <img src="/logo.png" alt="Anomaly Grid" className="w-full h-full" />
           </div>
           <div>
             <span className="font-bold text-white text-sm">Intellusia Studios</span>

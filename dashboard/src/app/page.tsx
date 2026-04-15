@@ -201,33 +201,35 @@ function LiveStatBar() {
 }
 
 function DemoShots() {
+  const base = process.env.NODE_ENV === 'production' ? '/anomaly-grid' : ''
+
   const shots = [
     {
       title: 'THREAT OPERATIONS',
       subtitle: 'Live globe, flat map, and confusion matrix views',
       href: '/dashboard',
-      image: '/dashboard-preview.svg',
+      image: `${base}/dashboard-preview.svg`,
       accent: 'from-cyan-500/20 via-cyan-500/5 to-transparent',
     },
     {
       title: 'THREAT INTEL CENTER',
       subtitle: 'MITRE ATT&CK, CVE, CWE, CAPEC, IOC feed correlation',
       href: '/dashboard/intel',
-      image: '/intel-preview.svg',
+      image: `${base}/intel-preview.svg`,
       accent: 'from-orange-500/20 via-orange-500/5 to-transparent',
     },
     {
       title: 'STIG SCANNER',
       subtitle: 'Compliance checks, control gaps, and vuln context',
       href: '/dashboard/stig-scanner',
-      image: '/stig-preview.svg',
+      image: `${base}/stig-preview.svg`,
       accent: 'from-emerald-500/20 via-emerald-500/5 to-transparent',
     },
     {
       title: 'MISSION CONTROL',
       subtitle: 'Tenant oversight, platform health, and usage visibility',
       href: '/mission-control',
-      image: '/mission-control-preview.svg',
+      image: `${base}/mission-control-preview.svg`,
       accent: 'from-pink-500/20 via-pink-500/5 to-transparent',
     },
   ]

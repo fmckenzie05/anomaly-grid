@@ -36,6 +36,13 @@ jobs:
         working-directory: dashboard
         run: npm run build
 
+      - name: Copy preview assets into export output
+        run: |
+          cp dashboard/public/dashboard-preview.svg dashboard/out/dashboard-preview.svg
+          cp dashboard/public/intel-preview.svg dashboard/out/intel-preview.svg
+          cp dashboard/public/stig-preview.svg dashboard/out/stig-preview.svg
+          cp dashboard/public/mission-control-preview.svg dashboard/out/mission-control-preview.svg
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

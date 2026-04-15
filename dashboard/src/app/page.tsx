@@ -169,7 +169,7 @@ export default function LandingPage() {
       {/* Background image with overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/hero-bg.png)' }}
+        style={{ backgroundImage: 'url(/anomaly-grid/hero-bg.png)' }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#020204]/70 via-[#020204]/85 to-[#020204]" />
 

@@ -1,23 +1,16 @@
 import type { NextConfig } from 'next'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const nextConfig: NextConfig = {
+  output: isProd ? 'export' : undefined,
+  basePath: isProd ? '/anomaly-grid' : '',
+  assetPrefix: isProd ? '/anomaly-grid/' : undefined,
   images: {
+    unoptimized: true,
     remotePatterns: [
       { protocol: 'https', hostname: '*.supabase.co' },
     ],
-  },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          { key: 'X-Frame-Options', value: 'DENY' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
-        ],
-      },
-    ]
   },
 }
 

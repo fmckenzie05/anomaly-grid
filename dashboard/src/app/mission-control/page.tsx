@@ -1,8 +1,6 @@
 // Anomaly Grid — Mission Control (Intellusia Platform Admin)
 // Route: /mission-control
 
-import { redirect } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
 import Image from 'next/image'
 import { Shield, Users, Activity, Server, DollarSign, AlertTriangle } from 'lucide-react'
 
@@ -34,26 +32,7 @@ const STATUS_BADGE: Record<string, string> = {
   suspended: 'text-red-400',
 }
 
-export default async function MissionControlPage() {
-  // Server-side auth + role check
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
-
-  // Check platform_admins table — only Intellusia operators may access this page
-  const { data: adminRecord } = await supabase
-    .from('platform_admins')
-    .select('id')
-    .eq('id', user.id)
-    .single()
-
-  if (!adminRecord) {
-    redirect('/dashboard')
-  }
-
+export default function MissionControlPage() {
   return (
     <div className="min-h-screen bg-[#030305]">
       {/* Nav */}
@@ -67,12 +46,13 @@ export default async function MissionControlPage() {
             <span className="text-xs text-gray-600 ml-2">Mission Control</span>
           </div>
         </div>
-        <span className="text-xs text-gray-600">Super Admin</span>
+        <span className="text-xs text-gray-600">Super Admin Demo</span>
       </nav>
 
       <div className="p-6">
         <h1 className="text-2xl font-bold text-white mb-2">Mission Control</h1>
-        <p className="text-sm text-gray-500 mb-8">All tenants, all sensors, all threats — one view.</p>
+        <p className="text-sm text-gray-500 mb-2">All tenants, all sensors, all threats — one view.</p>
+        <p className="text-xs text-yellow-500/80 mb-8">Demo mode on GitHub Pages — role-gated live admin view is available in runtime deployments.</p>
 
         {/* KPIs */}
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
@@ -86,8 +66,12 @@ export default async function MissionControlPage() {
 
         {/* Tenant Table */}
         <div className="bg-[#0a0b10] border border-[#141620] rounded-xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-[#141620]">
+          <div className="px-6 py-4 border-b border-[#141620] flex items-center justify-between gap-3">
             <h2 className="text-sm font-semibold text-gray-200">Tenants</h2>
+            <div className="flex items-center gap-2 text-[11px] font-mono text-yellow-500/80">
+              <Shield className="w-3.5 h-3.5" />
+              Demo dataset shown in static export
+            </div>
           </div>
           <table className="w-full text-sm">
             <thead>

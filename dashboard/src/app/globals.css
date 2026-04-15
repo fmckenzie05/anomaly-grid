@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Override monospace to Share Tech Mono everywhere */
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace !important;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

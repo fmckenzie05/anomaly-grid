@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Orbitron, Share_Tech_Mono } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'] })
+const orbitron = Orbitron({ subsets: ['latin'], variable: '--font-orbitron' })
+const shareTechMono = Share_Tech_Mono({ weight: '400', subsets: ['latin'], variable: '--font-mono' })
 
 export const metadata: Metadata = {
   title: 'Anomaly Grid — AI Cybersecurity Platform',
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-[#030305] text-white antialiased`}>
+      <body className={`${orbitron.variable} ${shareTechMono.variable} font-[family-name:var(--font-orbitron)] bg-[#030305] text-white antialiased`}>
         {children}
       </body>
     </html>

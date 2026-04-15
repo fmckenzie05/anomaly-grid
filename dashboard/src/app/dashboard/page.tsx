@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react'
 import { Shield, Activity, AlertTriangle, Radio, Eye, Wifi, X, ExternalLink, MapPin, Search, Crosshair, Fingerprint, Zap, Target, Lock, Skull } from 'lucide-react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+
+const ThreatGlobe = dynamic(() => import('@/components/ThreatGlobe'), { ssr: false })
 
 // ─── CVE Ticker (stock tape style) ───
 function CVETicker() {
@@ -363,9 +366,9 @@ export default function DashboardPage() {
           <KpiCard icon={<Lock className="w-4 h-4" />} label="Blocked Today" value={3421} color="green" />
         </div>
 
-        {/* Attack Map */}
+        {/* 3D Threat Globe */}
         <div className="mb-6">
-          <AttackMap events={MOCK_EVENTS} />
+          <ThreatGlobe />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

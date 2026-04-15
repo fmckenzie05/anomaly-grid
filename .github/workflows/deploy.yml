@@ -34,12 +34,16 @@ jobs:
 
       - name: Build Next.js (static export)
         working-directory: dashboard
-        run: npm run build
+        run: |
+          npm run build
+          pwd
+          ls -la
+          ls -la out
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dashboard/out
+          path: /home/runner/work/anomaly-grid/anomaly-grid/dashboard/out
 
   deploy:
     environment:

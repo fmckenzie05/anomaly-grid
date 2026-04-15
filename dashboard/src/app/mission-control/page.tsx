@@ -20,7 +20,7 @@ const MOCK = {
 }
 
 const PLAN_BADGE: Record<string, string> = {
-  starter: 'bg-gray-800 text-gray-400',
+  starter: 'bg-[#0f1118] text-gray-400',
   pro: 'bg-blue-900/50 text-blue-400',
   enterprise: 'bg-purple-900/50 text-purple-400',
 }
@@ -33,9 +33,9 @@ const STATUS_BADGE: Record<string, string> = {
 
 export default function MissionControlPage() {
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#030305]">
       {/* Nav */}
-      <nav className="border-b border-gray-800 px-6 py-3 flex items-center justify-between">
+      <nav className="border-b border-[#141620] px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Shield className="w-4 h-4 text-white" />
@@ -63,13 +63,13 @@ export default function MissionControlPage() {
         </div>
 
         {/* Tenant Table */}
-        <div className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-800">
+        <div className="bg-[#0a0b10] border border-[#141620] rounded-xl overflow-hidden">
+          <div className="px-6 py-4 border-b border-[#141620]">
             <h2 className="text-sm font-semibold text-gray-200">Tenants</h2>
           </div>
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-800">
+              <tr className="border-b border-[#141620]">
                 <th className="text-left text-xs text-gray-500 font-medium px-6 py-3">Tenant</th>
                 <th className="text-left text-xs text-gray-500 font-medium px-6 py-3">Plan</th>
                 <th className="text-left text-xs text-gray-500 font-medium px-6 py-3">Status</th>
@@ -81,7 +81,7 @@ export default function MissionControlPage() {
             </thead>
             <tbody>
               {MOCK.tenants.map(t => (
-                <tr key={t.name} className="border-b border-gray-800/50 hover:bg-gray-800/30 transition cursor-pointer">
+                <tr key={t.name} className="border-b border-[#141620]/50 hover:bg-[#0f1118]/30 transition cursor-pointer">
                   <td className="px-6 py-3 text-white font-medium">{t.name}</td>
                   <td className="px-6 py-3">
                     <span className={`text-xs px-2 py-0.5 rounded ${PLAN_BADGE[t.plan]}`}>{t.plan}</span>
@@ -107,7 +107,7 @@ export default function MissionControlPage() {
 
         {/* System Health */}
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <div className="bg-[#0a0b10] border border-[#141620] rounded-xl p-6">
             <h2 className="text-sm font-semibold text-gray-200 mb-4">Inference Pipeline</h2>
             <div className="space-y-2">
               <HealthRow label="Triton Server" status="online" detail="GPU: 2x A10G" />
@@ -116,7 +116,7 @@ export default function MissionControlPage() {
               <HealthRow label="Threat Classifier" status="online" detail="Latency: 8ms" />
             </div>
           </div>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+          <div className="bg-[#0a0b10] border border-[#141620] rounded-xl p-6">
             <h2 className="text-sm font-semibold text-gray-200 mb-4">Infrastructure</h2>
             <div className="space-y-2">
               <HealthRow label="Redpanda Cluster" status="online" detail="3 brokers, 72 topics" />
@@ -134,7 +134,7 @@ export default function MissionControlPage() {
 function Kpi({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: string | number; color: string }) {
   const colors: Record<string, string> = { red: 'text-red-400', green: 'text-green-400', blue: 'text-blue-400' }
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
+    <div className="bg-[#0a0b10] border border-[#141620] rounded-xl p-4">
       <div className={`${colors[color]} mb-2`}>{icon}</div>
       <div className="text-2xl font-bold text-white">{value}</div>
       <div className="text-xs text-gray-500 mt-1">{label}</div>

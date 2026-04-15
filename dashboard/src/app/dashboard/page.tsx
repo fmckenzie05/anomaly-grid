@@ -30,7 +30,7 @@ function CVETicker() {
   const scoreColor = (s: number) => s >= 9.0 ? 'text-red-400' : s >= 7.0 ? 'text-orange-400' : s >= 4.0 ? 'text-yellow-400' : 'text-green-400'
 
   return (
-    <div className="bg-black/80 border-y border-gray-800 overflow-hidden mb-6">
+    <div className="bg-[#020204] border-y border-[#141620] overflow-hidden mb-6">
       <div className="flex items-center">
         <div className="bg-red-600 px-3 py-1.5 text-xs font-bold text-white shrink-0 z-10">CVE FEED</div>
         <div className="overflow-hidden flex-1">
@@ -66,7 +66,7 @@ function ThreatLevelGauge({ score }: { score: number }) {
   const desc = score >= 90 ? 'ACTIVE BREACH — Immediate response required' : score >= 70 ? 'HIGH ALERT — Multiple threat actors active' : score >= 50 ? 'ELEVATED — Anomalous activity detected' : score >= 30 ? 'GUARDED — Normal with minor concerns' : 'NOMINAL — All systems clear'
 
   return (
-    <div className={`bg-gradient-to-r ${bgColor} to-transparent border border-gray-800 rounded-xl p-5 mb-6`}>
+    <div className={`bg-gradient-to-r ${bgColor} to-transparent border border-[#141620] rounded-xl p-5 mb-6`}>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div className={`text-3xl font-black font-mono ${color} tracking-wider`}>{level}</div>
@@ -81,7 +81,7 @@ function ThreatLevelGauge({ score }: { score: number }) {
         </div>
       </div>
       {/* Animated bar */}
-      <div className="mt-3 w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
+      <div className="mt-3 w-full bg-[#0f1118] rounded-full h-1.5 overflow-hidden">
         <div
           className={`h-1.5 rounded-full transition-all duration-1000 ${score >= 70 ? 'bg-red-500 animate-pulse' : score >= 50 ? 'bg-yellow-500' : 'bg-blue-500'}`}
           style={{ width: `${score}%` }}
@@ -249,8 +249,8 @@ function AttackMap({ events }: { events: typeof MOCK_EVENTS }) {
   const targetY = toY(38.9)
 
   return (
-    <div className="relative bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+    <div className="relative bg-[#0a0b10] border border-[#141620] rounded-xl overflow-hidden">
+      <div className="px-6 py-4 border-b border-[#141620] flex items-center justify-between">
         <h2 className="text-sm font-semibold text-gray-200 flex items-center gap-2">
           <Target className="w-4 h-4 text-red-500" />
           Threat Origin Map — Live
@@ -261,21 +261,21 @@ function AttackMap({ events }: { events: typeof MOCK_EVENTS }) {
           <LiveCounter label="fingerprints" base={892} />
         </div>
       </div>
-      <svg viewBox={`0 0 ${mapW} ${mapH}`} className="w-full" style={{ background: '#050510' }}>
+      <svg viewBox={`0 0 ${mapW} ${mapH}`} className="w-full" style={{ background: '#020204' }}>
         {/* Subtle grid */}
         {Array.from({ length: 7 }, (_, i) => (
-          <line key={`h${i}`} x1={0} y1={i * (mapH / 6)} x2={mapW} y2={i * (mapH / 6)} stroke="#0a1628" strokeWidth={0.5} />
+          <line key={`h${i}`} x1={0} y1={i * (mapH / 6)} x2={mapW} y2={i * (mapH / 6)} stroke="#060810" strokeWidth={0.5} />
         ))}
         {Array.from({ length: 13 }, (_, i) => (
-          <line key={`v${i}`} x1={i * (mapW / 12)} y1={0} x2={i * (mapW / 12)} y2={mapH} stroke="#0a1628" strokeWidth={0.5} />
+          <line key={`v${i}`} x1={i * (mapW / 12)} y1={0} x2={i * (mapW / 12)} y2={mapH} stroke="#060810" strokeWidth={0.5} />
         ))}
         {/* Continent shapes */}
-        <ellipse cx={180} cy={140} rx={90} ry={60} fill="none" stroke="#0f2847" strokeWidth={1} />
-        <ellipse cx={220} cy={270} rx={50} ry={70} fill="none" stroke="#0f2847" strokeWidth={1} />
-        <ellipse cx={420} cy={120} rx={50} ry={40} fill="none" stroke="#0f2847" strokeWidth={1} />
-        <ellipse cx={430} cy={230} rx={50} ry={70} fill="none" stroke="#0f2847" strokeWidth={1} />
-        <ellipse cx={580} cy={140} rx={110} ry={60} fill="none" stroke="#0f2847" strokeWidth={1} />
-        <ellipse cx={660} cy={300} rx={40} ry={25} fill="none" stroke="#0f2847" strokeWidth={1} />
+        <ellipse cx={180} cy={140} rx={90} ry={60} fill="none" stroke="#081430" strokeWidth={1} />
+        <ellipse cx={220} cy={270} rx={50} ry={70} fill="none" stroke="#081430" strokeWidth={1} />
+        <ellipse cx={420} cy={120} rx={50} ry={40} fill="none" stroke="#081430" strokeWidth={1} />
+        <ellipse cx={430} cy={230} rx={50} ry={70} fill="none" stroke="#081430" strokeWidth={1} />
+        <ellipse cx={580} cy={140} rx={110} ry={60} fill="none" stroke="#081430" strokeWidth={1} />
+        <ellipse cx={660} cy={300} rx={40} ry={25} fill="none" stroke="#081430" strokeWidth={1} />
 
         {/* HQ shield */}
         <circle cx={targetX} cy={targetY} r={6} fill="#3b82f6" opacity={0.9}>
@@ -319,9 +319,9 @@ export default function DashboardPage() {
   const threatScore = 72
 
   return (
-    <div className="min-h-screen bg-gray-950">
+    <div className="min-h-screen bg-[#030305]">
       {/* Nav */}
-      <nav className="border-b border-gray-800 px-6 py-3 flex items-center justify-between">
+      <nav className="border-b border-[#141620] px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
             <Shield className="w-4 h-4 text-white" />
@@ -370,8 +370,8 @@ export default function DashboardPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Live Threat Feed */}
-          <div className="lg:col-span-2 bg-gray-900 border border-gray-800 rounded-xl">
-            <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+          <div className="lg:col-span-2 bg-[#0a0b10] border border-[#141620] rounded-xl">
+            <div className="px-6 py-4 border-b border-[#141620] flex items-center justify-between">
               <h2 className="text-sm font-semibold text-gray-200 flex items-center gap-2">
                 <Zap className="w-4 h-4 text-yellow-500" /> Live Threat Feed
               </h2>
@@ -382,8 +382,8 @@ export default function DashboardPage() {
                 <div
                   key={event.id}
                   onClick={() => setSelectedEvent(event)}
-                  className={`px-6 py-3.5 flex items-center justify-between hover:bg-gray-800/30 transition cursor-pointer group ${
-                    selectedEvent?.id === event.id ? 'bg-gray-800/50 border-l-2 border-blue-500' : ''
+                  className={`px-6 py-3.5 flex items-center justify-between hover:bg-[#0f1118]/30 transition cursor-pointer group ${
+                    selectedEvent?.id === event.id ? 'bg-[#0f1118]/50 border-l-2 border-blue-500' : ''
                   }`}
                 >
                   <div className="flex items-center gap-4">
@@ -414,7 +414,7 @@ export default function DashboardPage() {
           {/* Right Column */}
           <div className="space-y-6">
             {/* Kill Chain Heatmap */}
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <div className="bg-[#0a0b10] border border-[#141620] rounded-xl p-6">
               <h2 className="text-sm font-semibold text-gray-200 mb-4 flex items-center gap-2">
                 <Target className="w-4 h-4 text-red-500" /> Cyber Kill Chain
               </h2>
@@ -429,7 +429,7 @@ export default function DashboardPage() {
                   { phase: '7. Actions', count: 3, active: true },
                 ].map(p => (
                   <div key={p.phase} className="flex items-center gap-3">
-                    <div className={`w-3 h-3 rounded-sm ${p.count > 50 ? 'bg-red-500' : p.count > 10 ? 'bg-orange-500' : p.count > 0 ? 'bg-yellow-500' : 'bg-gray-800'} ${p.active ? 'animate-pulse' : ''}`} />
+                    <div className={`w-3 h-3 rounded-sm ${p.count > 50 ? 'bg-red-500' : p.count > 10 ? 'bg-orange-500' : p.count > 0 ? 'bg-yellow-500' : 'bg-[#0f1118]'} ${p.active ? 'animate-pulse' : ''}`} />
                     <span className="text-xs text-gray-400 flex-1">{p.phase}</span>
                     <span className={`text-xs font-mono ${p.count > 0 ? 'text-white' : 'text-gray-700'}`}>{p.count}</span>
                   </div>
@@ -438,7 +438,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Top Actors */}
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <div className="bg-[#0a0b10] border border-[#141620] rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold text-gray-200 flex items-center gap-2">
                   <Skull className="w-4 h-4 text-red-500" /> Active Threat Actors
@@ -452,7 +452,7 @@ export default function DashboardPage() {
                   { name: 'BF-GROUP-12', events: 89, severity: 'high', country: '🇮🇷', confidence: '89%' },
                   { name: 'RECON-NODE-9', events: 32, severity: 'medium', country: '🇰🇵', confidence: '64%' },
                 ].map(actor => (
-                  <Link href="/dashboard/actors" key={actor.name} className="flex items-center justify-between hover:bg-gray-800/30 rounded p-1.5 -mx-1 transition">
+                  <Link href="/dashboard/actors" key={actor.name} className="flex items-center justify-between hover:bg-[#0f1118]/30 rounded p-1.5 -mx-1 transition">
                     <div className="flex items-center gap-2">
                       <span className={`w-2 h-2 rounded-full ${SEVERITY_DOT[actor.severity]}`} />
                       <span className="text-xs font-mono text-gray-300">{actor.name}</span>
@@ -468,7 +468,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Sensors */}
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <div className="bg-[#0a0b10] border border-[#141620] rounded-xl p-6">
               <h2 className="text-sm font-semibold text-gray-200 mb-4 flex items-center gap-2">
                 <Radio className="w-4 h-4 text-green-500" /> Edge Sensors
               </h2>
@@ -499,9 +499,9 @@ export default function DashboardPage() {
       {/* ─── Event Detail Slide-Over (Full Threat Analysis) ─── */}
       {selectedEvent && (
         <div className="fixed inset-0 z-50 flex justify-end">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedEvent(null)} />
-          <div className="relative w-full max-w-2xl bg-gray-900 border-l border-gray-800 overflow-y-auto">
-            <div className="sticky top-0 bg-gray-950 border-b border-gray-800 px-6 py-4 flex items-center justify-between z-10">
+          <div className="absolute inset-0 bg-[#020204]/90 backdrop-blur-sm" onClick={() => setSelectedEvent(null)} />
+          <div className="relative w-full max-w-2xl bg-[#0a0b10] border-l border-[#141620] overflow-y-auto">
+            <div className="sticky top-0 bg-[#030305] border-b border-[#141620] px-6 py-4 flex items-center justify-between z-10">
               <div className="flex items-center gap-3">
                 <span className={`text-xs px-2 py-0.5 rounded border ${SEVERITY_COLORS[selectedEvent.severity]}`}>
                   {selectedEvent.severity}
@@ -520,7 +520,7 @@ export default function DashboardPage() {
               {/* Connection */}
               <div>
                 <h3 className="text-xs font-semibold text-gray-400 uppercase mb-3">Connection Details</h3>
-                <div className="bg-black/30 border border-gray-800 rounded-lg p-4 space-y-2 font-mono text-xs">
+                <div className="bg-[#050508] border border-[#141620] rounded-lg p-4 space-y-2 font-mono text-xs">
                   <div className="flex justify-between"><span className="text-gray-500">Source</span><span className="text-red-400">{selectedEvent.src}:{selectedEvent.src_port}</span></div>
                   <div className="flex justify-between"><span className="text-gray-500">Target</span><span className="text-blue-400">{selectedEvent.dst}:{selectedEvent.dst_port}</span></div>
                   <div className="flex justify-between"><span className="text-gray-500">Protocol</span><span className="text-white">{selectedEvent.protocol}</span></div>
@@ -582,7 +582,7 @@ export default function DashboardPage() {
                       href={`https://attack.mitre.org/techniques/${t.id.replace('.', '/')}/`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block bg-black/30 border border-gray-800 rounded-lg p-3 hover:border-gray-600 transition"
+                      className="block bg-[#050508] border border-[#141620] rounded-lg p-3 hover:border-gray-600 transition"
                     >
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-xs font-mono text-blue-400">{t.id}</span>
@@ -626,7 +626,7 @@ export default function DashboardPage() {
               {selectedEvent.actor && (
                 <div>
                   <h3 className="text-xs font-semibold text-gray-400 uppercase mb-3">Attributed Actor</h3>
-                  <Link href="/dashboard/actors" className="flex items-center justify-between bg-gray-800 rounded-lg p-3 hover:bg-gray-700 transition">
+                  <Link href="/dashboard/actors" className="flex items-center justify-between bg-[#0f1118] rounded-lg p-3 hover:bg-gray-700 transition">
                     <div className="flex items-center gap-2">
                       <Skull className="w-4 h-4 text-red-400" />
                       <span className="text-sm font-mono text-white">{selectedEvent.actor}</span>
@@ -639,14 +639,14 @@ export default function DashboardPage() {
               {/* Raw Log */}
               <div>
                 <h3 className="text-xs font-semibold text-gray-400 uppercase mb-3">Raw Log</h3>
-                <pre className="text-xs font-mono text-gray-400 bg-black/50 border border-gray-800 rounded-lg p-4 overflow-x-auto whitespace-pre-wrap">{selectedEvent.raw_log}</pre>
+                <pre className="text-xs font-mono text-gray-400 bg-[#020204]/80 border border-[#141620] rounded-lg p-4 overflow-x-auto whitespace-pre-wrap">{selectedEvent.raw_log}</pre>
               </div>
 
               {/* Actions */}
               <div className="flex gap-2 pt-2">
                 <button className="flex-1 text-xs bg-blue-600 text-white py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Acknowledge</button>
                 <button className="flex-1 text-xs bg-red-600 text-white py-2.5 rounded-lg font-semibold hover:bg-red-700 transition">Block Source</button>
-                <button className="flex-1 text-xs bg-gray-800 text-gray-300 py-2.5 rounded-lg font-semibold hover:bg-gray-700 transition border border-gray-700">False Positive</button>
+                <button className="flex-1 text-xs bg-[#0f1118] text-gray-300 py-2.5 rounded-lg font-semibold hover:bg-gray-700 transition border border-gray-700">False Positive</button>
               </div>
             </div>
           </div>
@@ -659,7 +659,7 @@ export default function DashboardPage() {
 function KpiCard({ icon, label, value, color }: { icon: React.ReactNode; label: string; value: number; color: string }) {
   const colors: Record<string, string> = { red: 'text-red-400', orange: 'text-orange-400', yellow: 'text-yellow-400', green: 'text-green-400', blue: 'text-blue-400' }
   return (
-    <div className="bg-gray-900 border border-gray-800 rounded-xl p-4">
+    <div className="bg-[#0a0b10] border border-[#141620] rounded-xl p-4">
       <div className={`${colors[color]} mb-2`}>{icon}</div>
       <div className="text-2xl font-bold text-white">{value.toLocaleString()}</div>
       <div className="text-xs text-gray-500 mt-1">{label}</div>

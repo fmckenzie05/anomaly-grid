@@ -2,7 +2,7 @@ import Link from 'next/link'
 
 export default function LandingPage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-950">
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#030305]">
       {/* Grid background effect */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:64px_64px]" />
 
@@ -36,7 +36,7 @@ export default function LandingPage() {
           </Link>
           <Link
             href="/login"
-            className="border border-gray-700 text-gray-300 px-8 py-3 rounded-lg font-semibold hover:bg-gray-900 hover:border-gray-600 transition"
+            className="border border-gray-700 text-gray-300 px-8 py-3 rounded-lg font-semibold hover:bg-[#0a0b10] hover:border-gray-600 transition"
           >
             Sign In
           </Link>
@@ -45,7 +45,7 @@ export default function LandingPage() {
         {/* Tech badges */}
         <div className="mt-12 flex gap-3 justify-center flex-wrap">
           {['NVIDIA Morpheus', 'Triton Inference', 'Real-time DFP', 'MITRE ATT&CK', 'STIX/TAXII'].map(tag => (
-            <span key={tag} className="text-xs px-3 py-1 rounded-full bg-gray-900 border border-gray-800 text-gray-500">
+            <span key={tag} className="text-xs px-3 py-1 rounded-full bg-[#0a0b10] border border-[#141620] text-gray-500">
               {tag}
             </span>
           ))}

@@ -69,7 +69,7 @@ const CONFIDENCE_COLORS: Record<string, string> = {
 
 export default function ActorsPage() {
   return (
-    <div className="min-h-screen bg-gray-950 px-6 py-8">
+    <div className="min-h-screen bg-[#030305] px-6 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
           <a href="/dashboard" className="text-xs text-gray-500 hover:text-gray-300">← Dashboard</a>
@@ -83,7 +83,7 @@ export default function ActorsPage() {
 
       <div className="space-y-4">
         {MOCK_ACTORS.map(actor => (
-          <div key={actor.id} className="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-gray-700 transition">
+          <div key={actor.id} className="bg-[#0a0b10] border border-[#141620] rounded-xl p-6 hover:border-gray-700 transition">
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div>
@@ -112,7 +112,7 @@ export default function ActorsPage() {
                 <h3 className="text-xs font-semibold text-gray-400 mb-2">Source IPs</h3>
                 <div className="space-y-1">
                   {actor.source_ips.map(ip => (
-                    <div key={ip} className="text-xs font-mono text-gray-300 bg-gray-800 px-2 py-1 rounded">
+                    <div key={ip} className="text-xs font-mono text-gray-300 bg-[#0f1118] px-2 py-1 rounded">
                       {ip}
                     </div>
                   ))}
@@ -124,7 +124,7 @@ export default function ActorsPage() {
                 <h3 className="text-xs font-semibold text-gray-400 mb-2">MITRE ATT&CK</h3>
                 <div className="space-y-1">
                   {actor.techniques.map(t => (
-                    <div key={t} className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">
+                    <div key={t} className="text-xs text-gray-400 bg-[#0f1118] px-2 py-1 rounded">
                       {t}
                     </div>
                   ))}
@@ -135,7 +135,7 @@ export default function ActorsPage() {
               <div>
                 <h3 className="text-xs font-semibold text-gray-400 mb-2">Device Fingerprint</h3>
                 {actor.fingerprints.map((fp, i) => (
-                  <div key={i} className="bg-gray-800 rounded p-2 space-y-1">
+                  <div key={i} className="bg-[#0f1118] rounded p-2 space-y-1">
                     <div className="text-xs text-gray-300">OS: <span className="text-white">{fp.os}</span></div>
                     <div className="text-xs text-gray-300">Type: <span className="text-white">{fp.device}</span></div>
                     <div className="text-xs text-gray-400">{fp.behavior}</div>

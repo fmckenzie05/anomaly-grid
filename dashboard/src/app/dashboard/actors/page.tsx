@@ -1,6 +1,7 @@
 // Anomaly Grid — Threat Actor Profiles
 // Route: /dashboard/actors
 
+import Link from 'next/link'
 import { Eye, Globe, Clock, AlertTriangle } from 'lucide-react'
 
 const MOCK_ACTORS = [
@@ -72,7 +73,7 @@ export default function ActorsPage() {
     <div className="min-h-screen bg-[#030305] px-6 py-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <a href="/dashboard" className="text-xs text-gray-500 hover:text-gray-300">← Dashboard</a>
+          <Link href="/dashboard" className="text-xs text-gray-500 hover:text-gray-300">← Dashboard</Link>
           <h1 className="text-xl font-bold text-white mt-1 flex items-center gap-2">
             <Eye className="w-5 h-5 text-blue-500" />
             Threat Actor Profiles

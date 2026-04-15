@@ -129,19 +129,7 @@ export default function StigScannerPage() {
   })
 
   return (
-    <div className="min-h-screen bg-[#030305]">
-      {/* Nav */}
-      <nav className="border-b border-[#141620] px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg overflow-hidden">
-            <img src="/logo.png" alt="Anomaly Grid" className="w-full h-full" />
-          </div>
-          <span className="font-bold text-white">Anomaly Grid</span>
-          <span className="text-xs text-gray-600 ml-2">/ STIG Scanner</span>
-        </div>
-        <Link href="/dashboard" className="text-xs text-gray-400 hover:text-blue-400 transition">← Dashboard</Link>
-      </nav>
-
+    <div>
       <div className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>

@@ -2,11 +2,14 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 // ─── OAuth Provider Buttons ───
-function OAuthButton({ provider, icon, color }: { provider: string; icon: React.ReactNode; color: string }) {
+function OAuthButton({ provider, icon, color, onClick }: { provider: string; icon: React.ReactNode; color: string; onClick: () => void }) {
   return (
-    <button className={`w-full flex items-center justify-center gap-3 py-2.5 rounded border transition-all duration-300 ${color}`}>
+    <button onClick={onClick} className={`w-full flex items-center justify-center gap-3 py-2.5 rounded border transition-all duration-300 ${color}`}>
       {icon}
       <span className="text-sm font-mono">Continue with {provider}</span>
     </button>
@@ -54,15 +57,44 @@ export default function LoginPage() {
   const [fullName, setFullName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
     setError('')
-    setTimeout(() => {
-      setLoading(false)
-      setError('Connect Supabase to enable auth')
-    }, 1000)
+    const supabase = createClient()
+
+    if (mode === 'login') {
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+      if (authError) {
+        setError(authError.message)
+        setLoading(false)
+        return
+      }
+      router.push('/dashboard')
+    } else {
+      const { error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: fullName, org_name: orgName } },
+      })
+      if (authError) {
+        setError(authError.message)
+        setLoading(false)
+        return
+      }
+      setError('Check your email to confirm your account.')
+    }
+    setLoading(false)
+  }
+
+  async function handleOAuth(provider: 'google' | 'github' | 'azure') {
+    const supabase = createClient()
+    await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    })
   }
 
   return (
@@ -80,8 +112,8 @@ export default function LoginPage() {
       <div className="hidden lg:flex flex-col justify-between flex-1 p-12 relative z-10">
         <div>
           <Link href="/" className="flex items-center gap-3 mb-20">
-            <div className="w-8 h-8 rounded-lg overflow-hidden">
-            <img src="/logo.png" alt="Anomaly Grid" className="w-full h-full" />
+            <div className="w-8 h-8 rounded-lg overflow-hidden relative">
+              <Image src="/logo.png" alt="Anomaly Grid" fill className="object-cover" />
             </div>
             <span className="text-sm font-mono font-bold text-cyan-400 tracking-widest">ANOMALY GRID</span>
           </Link>
@@ -121,8 +153,8 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           {/* Logo for mobile */}
           <Link href="/" className="flex items-center gap-3 mb-8 lg:hidden">
-            <div className="w-8 h-8 rounded-lg overflow-hidden">
-            <img src="/logo.png" alt="Anomaly Grid" className="w-full h-full" />
+            <div className="w-8 h-8 rounded-lg overflow-hidden relative">
+              <Image src="/logo.png" alt="Anomaly Grid" fill className="object-cover" />
             </div>
             <span className="text-sm font-mono font-bold text-cyan-400 tracking-widest">ANOMALY GRID</span>
           </Link>
@@ -161,16 +193,19 @@ export default function LoginPage() {
                 provider="Google"
                 icon={<GoogleIcon />}
                 color="bg-[#0f1118] border-[#141620] text-gray-300 hover:bg-[#141620] hover:border-gray-600"
+                onClick={() => handleOAuth('google')}
               />
               <OAuthButton
                 provider="GitHub"
                 icon={<GitHubIcon />}
                 color="bg-[#0f1118] border-[#141620] text-gray-300 hover:bg-[#141620] hover:border-gray-600"
+                onClick={() => handleOAuth('github')}
               />
               <OAuthButton
                 provider="Microsoft"
                 icon={<MicrosoftIcon />}
                 color="bg-[#0f1118] border-[#141620] text-gray-300 hover:bg-[#141620] hover:border-gray-600"
+                onClick={() => handleOAuth('azure')}
               />
             </div>
 
@@ -263,13 +298,13 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Trust badges */}
+          {/* Security info */}
           <div className="mt-6 flex items-center justify-center gap-4">
-            <span className="text-xs font-mono text-gray-700">🔒 256-bit encryption</span>
+            <span className="text-xs font-mono text-gray-700">🔒 Supabase Auth</span>
             <span className="text-gray-800">|</span>
-            <span className="text-xs font-mono text-gray-700">SOC 2 compliant</span>
+            <span className="text-xs font-mono text-gray-700">End-to-end encrypted</span>
             <span className="text-gray-800">|</span>
-            <span className="text-xs font-mono text-gray-700">FedRAMP ready</span>
+            <span className="text-xs font-mono text-gray-700">Built for CMMC-2</span>
           </div>
         </div>
       </div>

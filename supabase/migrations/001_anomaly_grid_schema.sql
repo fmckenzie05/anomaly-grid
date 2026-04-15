@@ -198,8 +198,21 @@ create table platform_events (
 );
 
 -- ─────────────────────────────────────────
+-- JWT HELPER FUNCTION
+-- Uses JWT app_metadata to avoid correlated subqueries in RLS policies.
+-- Set tenant_id in Supabase Auth hook: app_metadata.tenant_id = <uuid>
+-- ─────────────────────────────────────────
+create or replace function auth.current_tenant_id() returns uuid as $$
+  select (auth.jwt() -> 'app_metadata' ->> 'tenant_id')::uuid
+$$ language sql stable;
+
+-- ─────────────────────────────────────────
 -- ROW LEVEL SECURITY
 -- ─────────────────────────────────────────
+alter table tenants enable row level security;
+alter table platform_admins enable row level security;
+alter table usage_snapshots enable row level security;
+alter table platform_events enable row level security;
 alter table users enable row level security;
 alter table sensors enable row level security;
 alter table device_fingerprints enable row level security;
@@ -209,14 +222,31 @@ alter table alerts enable row level security;
 alter table anomaly_scores enable row level security;
 alter table audit_log enable row level security;
 
-create policy "tenant_isolation" on users for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
-create policy "tenant_isolation" on sensors for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
-create policy "tenant_isolation" on device_fingerprints for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
-create policy "tenant_isolation" on threat_actors for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
-create policy "tenant_isolation" on threat_events for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
-create policy "tenant_isolation" on alerts for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
-create policy "tenant_isolation" on anomaly_scores for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
-create policy "tenant_isolation" on audit_log for all using (tenant_id = (select tenant_id from users where id = auth.uid()));
+-- Tenants: users can only see their own tenant
+create policy "tenant_self_read" on tenants
+  for select using (id = auth.current_tenant_id());
+
+-- Platform admins: only platform admins can read/write
+create policy "platform_admin_only" on platform_admins
+  for all using (auth.uid() in (select id from platform_admins));
+
+-- Usage snapshots: tenant isolation
+create policy "tenant_isolation" on usage_snapshots
+  for all using (tenant_id = auth.current_tenant_id());
+
+-- Platform events: platform admins only
+create policy "platform_admin_only" on platform_events
+  for all using (auth.uid() in (select id from platform_admins));
+
+-- Tenant-scoped tables using JWT claim (no correlated subquery per row)
+create policy "tenant_isolation" on users for all using (tenant_id = auth.current_tenant_id());
+create policy "tenant_isolation" on sensors for all using (tenant_id = auth.current_tenant_id());
+create policy "tenant_isolation" on device_fingerprints for all using (tenant_id = auth.current_tenant_id());
+create policy "tenant_isolation" on threat_actors for all using (tenant_id = auth.current_tenant_id());
+create policy "tenant_isolation" on threat_events for all using (tenant_id = auth.current_tenant_id());
+create policy "tenant_isolation" on alerts for all using (tenant_id = auth.current_tenant_id());
+create policy "tenant_isolation" on anomaly_scores for all using (tenant_id = auth.current_tenant_id());
+create policy "tenant_isolation" on audit_log for all using (tenant_id = auth.current_tenant_id());
 
 -- ─────────────────────────────────────────
 -- INDEXES
@@ -225,8 +255,11 @@ create index idx_threat_events_tenant on threat_events(tenant_id);
 create index idx_threat_events_timestamp on threat_events(timestamp desc);
 create index idx_threat_events_severity on threat_events(severity);
 create index idx_threat_events_src_ip on threat_events(src_ip);
+-- Composite index for the primary query pattern: tenant + timestamp DESC
+create index idx_threat_events_tenant_ts on threat_events(tenant_id, timestamp desc);
 create index idx_threat_actors_tenant on threat_actors(tenant_id);
-create index idx_alerts_tenant on threat_events(tenant_id);
+-- Fixed: idx_alerts_tenant was previously pointing to threat_events (wrong table)
+create index idx_alerts_tenant on alerts(tenant_id);
 create index idx_alerts_status on alerts(status);
 create index idx_anomaly_scores_tenant on anomaly_scores(tenant_id);
 create index idx_anomaly_scores_entity on anomaly_scores(entity_type, entity_id);

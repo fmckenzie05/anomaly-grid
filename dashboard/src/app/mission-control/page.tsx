@@ -1,6 +1,9 @@
 // Anomaly Grid — Mission Control (Intellusia Platform Admin)
 // Route: /mission-control
 
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import Image from 'next/image'
 import { Shield, Users, Activity, Server, DollarSign, AlertTriangle } from 'lucide-react'
 
 const MOCK = {
@@ -31,14 +34,33 @@ const STATUS_BADGE: Record<string, string> = {
   suspended: 'text-red-400',
 }
 
-export default function MissionControlPage() {
+export default async function MissionControlPage() {
+  // Server-side auth + role check
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Check platform_admins table — only Intellusia operators may access this page
+  const { data: adminRecord } = await supabase
+    .from('platform_admins')
+    .select('id')
+    .eq('id', user.id)
+    .single()
+
+  if (!adminRecord) {
+    redirect('/dashboard')
+  }
+
   return (
     <div className="min-h-screen bg-[#030305]">
       {/* Nav */}
       <nav className="border-b border-[#141620] px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg overflow-hidden">
-            <img src="/logo.png" alt="Anomaly Grid" className="w-full h-full" />
+          <div className="w-8 h-8 rounded-lg overflow-hidden relative">
+            <Image src="/logo.png" alt="Anomaly Grid" fill className="object-cover" />
           </div>
           <div>
             <span className="font-bold text-white text-sm">Intellusia Studios</span>

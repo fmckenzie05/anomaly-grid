@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 // ─── Matrix Rain Effect ───
 function MatrixRain() {
@@ -185,8 +186,8 @@ export default function LandingPage() {
       {/* Top bar */}
       <div className="relative z-20 border-b border-cyan-500/10 px-8 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg overflow-hidden">
-            <img src="/logo.png" alt="Anomaly Grid" className="w-full h-full" />
+          <div className="w-8 h-8 rounded-lg overflow-hidden relative">
+            <Image src="/logo.png" alt="Anomaly Grid" fill className="object-cover" />
           </div>
           <span className="text-sm font-mono font-bold text-cyan-400 tracking-widest">ANOMALY GRID</span>
         </div>

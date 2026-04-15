@@ -7,51 +7,72 @@ import dynamic from 'next/dynamic'
 
 const ThreatGlobe = dynamic(() => import('@/components/ThreatGlobe'), { ssr: false })
 
-// ─── CVE Ticker (stock tape style) ───
-function CVETicker() {
-  const cves = [
-    { id: 'CVE-2024-3400', score: 10.0, vendor: 'Palo Alto', desc: 'PAN-OS Command Injection', trend: 'up' },
-    { id: 'CVE-2024-6387', score: 8.1, vendor: 'OpenSSH', desc: 'regreSSHion RCE', trend: 'up' },
-    { id: 'CVE-2024-3094', score: 10.0, vendor: 'XZ Utils', desc: 'Supply Chain Backdoor', trend: 'down' },
-    { id: 'CVE-2023-48795', score: 5.9, vendor: 'SSH', desc: 'Terrapin Prefix Truncation', trend: 'flat' },
-    { id: 'CVE-2024-21887', score: 9.1, vendor: 'Ivanti', desc: 'Connect Secure RCE', trend: 'up' },
-    { id: 'CVE-2023-46805', score: 8.2, vendor: 'Ivanti', desc: 'Auth Bypass', trend: 'up' },
-    { id: 'CVE-2024-1709', score: 10.0, vendor: 'ConnectWise', desc: 'ScreenConnect Auth Bypass', trend: 'down' },
-    { id: 'CVE-2023-4966', score: 9.4, vendor: 'Citrix', desc: 'Citrix Bleed', trend: 'down' },
-    { id: 'CVE-2024-27198', score: 9.8, vendor: 'JetBrains', desc: 'TeamCity Auth Bypass', trend: 'up' },
-    { id: 'CVE-2023-22515', score: 10.0, vendor: 'Atlassian', desc: 'Confluence Priv Escalation', trend: 'flat' },
-    { id: 'CVE-2024-20353', score: 8.6, vendor: 'Cisco', desc: 'ASA WebVPN DoS', trend: 'up' },
-    { id: 'CVE-2023-20198', score: 10.0, vendor: 'Cisco', desc: 'IOS XE Web UI RCE', trend: 'down' },
-    { id: 'CVE-2024-4577', score: 9.8, vendor: 'PHP', desc: 'CGI Argument Injection', trend: 'up' },
-    { id: 'CVE-2019-0708', score: 9.8, vendor: 'Microsoft', desc: 'BlueKeep RDP RCE', trend: 'flat' },
-    { id: 'CVE-2020-0796', score: 10.0, vendor: 'Microsoft', desc: 'SMBGhost RCE', trend: 'flat' },
-    { id: 'CVE-2024-23897', score: 9.8, vendor: 'Jenkins', desc: 'Arbitrary File Read', trend: 'up' },
+// ─── Unified Intel Ticker (CVE + MITRE + CWE + CAPEC + IOC) ───
+function IntelTicker() {
+  type TickerItem = { type: string; id: string; label: string; detail: string; color: string; severity: string; url: string }
+
+  const items: TickerItem[] = [
+    // CVEs
+    { type: 'CVE', id: 'CVE-2024-3400', label: 'PAN-OS Command Injection', detail: 'CVSS 10.0 • CWE-77 • CAPEC-88', color: '#ef4444', severity: 'CRITICAL', url: 'https://nvd.nist.gov/vuln/detail/CVE-2024-3400' },
+    { type: 'MITRE', id: 'T1071.001', label: 'Web Protocols C2', detail: 'APT29, Lazarus • Command and Control', color: '#f97316', severity: 'TTP', url: 'https://attack.mitre.org/techniques/T1071/001/' },
+    { type: 'CVE', id: 'CVE-2024-6387', label: 'regreSSHion RCE', detail: 'CVSS 8.1 • CWE-362 • CAPEC-29', color: '#f97316', severity: 'HIGH', url: 'https://nvd.nist.gov/vuln/detail/CVE-2024-6387' },
+    { type: 'CWE', id: 'CWE-77', label: 'Command Injection', detail: 'Root cause of CVE-2024-3400, CVE-2024-21887', color: '#eab308', severity: 'WEAKNESS', url: 'https://cwe.mitre.org/data/definitions/77.html' },
+    { type: 'IOC', id: '185.220.101.34', label: 'Tor Exit Node', detail: 'APT-SHADOW-7 • C2 Beacon • OTX verified', color: '#ef4444', severity: 'MALICIOUS', url: '#' },
+    { type: 'MITRE', id: 'T1110.004', label: 'Credential Stuffing', detail: 'APT33, Kimsuky • Credential Access', color: '#f97316', severity: 'TTP', url: 'https://attack.mitre.org/techniques/T1110/004/' },
+    { type: 'CVE', id: 'CVE-2024-3094', label: 'XZ Supply Chain Backdoor', detail: 'CVSS 10.0 • CWE-506 • CAPEC-538', color: '#ef4444', severity: 'CRITICAL', url: 'https://nvd.nist.gov/vuln/detail/CVE-2024-3094' },
+    { type: 'CAPEC', id: 'CAPEC-88', label: 'OS Command Injection', detail: 'Maps to CWE-77 → CVE-2024-3400', color: '#06b6d4', severity: 'PATTERN', url: 'https://capec.mitre.org/data/definitions/88.html' },
+    { type: 'IOC', id: '45.155.205.233', label: 'Scanner Cluster', detail: 'SCAN-CLUSTER-44 • Port Scan • MISP feed', color: '#f97316', severity: 'SUSPICIOUS', url: '#' },
+    { type: 'MITRE', id: 'T1190', label: 'Exploit Public-Facing App', detail: 'APT40, Hafnium • Initial Access', color: '#ef4444', severity: 'TTP', url: 'https://attack.mitre.org/techniques/T1190/' },
+    { type: 'CVE', id: 'CVE-2023-4966', label: 'Citrix Bleed', detail: 'CVSS 9.4 • CWE-119 • CAPEC-100', color: '#ef4444', severity: 'CRITICAL', url: 'https://nvd.nist.gov/vuln/detail/CVE-2023-4966' },
+    { type: 'CWE', id: 'CWE-362', label: 'Race Condition', detail: 'Root cause of regreSSHion (CVE-2024-6387)', color: '#eab308', severity: 'WEAKNESS', url: 'https://cwe.mitre.org/data/definitions/362.html' },
+    { type: 'IOC', id: '193.42.33.0/24', label: 'BF Cluster Iran', detail: 'BF-GROUP-12 • Brute Force • CISA alert', color: '#f97316', severity: 'MALICIOUS', url: '#' },
+    { type: 'MITRE', id: 'T1048.003', label: 'DNS Exfiltration', detail: 'APT34, Turla • Exfiltration', color: '#a855f7', severity: 'TTP', url: 'https://attack.mitre.org/techniques/T1048/003/' },
+    { type: 'CAPEC', id: 'CAPEC-600', label: 'Credential Stuffing', detail: 'Maps to CWE-521 → T1110.004', color: '#06b6d4', severity: 'PATTERN', url: 'https://capec.mitre.org/data/definitions/600.html' },
+    { type: 'CVE', id: 'CVE-2024-21887', label: 'Ivanti Connect Secure RCE', detail: 'CVSS 9.1 • CWE-77 • CISA KEV', color: '#ef4444', severity: 'CRITICAL', url: 'https://nvd.nist.gov/vuln/detail/CVE-2024-21887' },
+    { type: 'IOC', id: 'evil-domain.cc', label: 'DNS Tunnel Domain', detail: 'High entropy • 3 days old • Privacy reg', color: '#eab308', severity: 'SUSPICIOUS', url: '#' },
+    { type: 'CWE', id: 'CWE-506', label: 'Embedded Malicious Code', detail: 'Supply chain attacks — XZ, SolarWinds', color: '#eab308', severity: 'WEAKNESS', url: 'https://cwe.mitre.org/data/definitions/506.html' },
+    { type: 'MITRE', id: 'T1595.001', label: 'Active Scanning', detail: 'APT1, Volt Typhoon • Reconnaissance', color: '#3b82f6', severity: 'TTP', url: 'https://attack.mitre.org/techniques/T1595/001/' },
+    { type: 'CAPEC', id: 'CAPEC-538', label: 'Open-Source Library Manipulation', detail: 'Maps to CWE-506 → XZ backdoor', color: '#06b6d4', severity: 'PATTERN', url: 'https://capec.mitre.org/data/definitions/538.html' },
   ]
 
-  const trendIcon = (t: string) => t === 'up' ? '🔺' : t === 'down' ? '🔻' : '▬'
-  const trendColor = (t: string) => t === 'up' ? 'text-red-400' : t === 'down' ? 'text-green-400' : 'text-gray-500'
-  const scoreColor = (s: number) => s >= 9.0 ? 'text-red-400' : s >= 7.0 ? 'text-orange-400' : s >= 4.0 ? 'text-yellow-400' : 'text-green-400'
+  const typeBadge: Record<string, string> = {
+    CVE: 'bg-red-600 text-white',
+    MITRE: 'bg-orange-600 text-white',
+    CWE: 'bg-yellow-600 text-black',
+    CAPEC: 'bg-cyan-600 text-black',
+    IOC: 'bg-purple-600 text-white',
+  }
+
+  const sevColor: Record<string, string> = {
+    CRITICAL: 'text-red-400',
+    HIGH: 'text-orange-400',
+    TTP: 'text-orange-400',
+    WEAKNESS: 'text-yellow-400',
+    PATTERN: 'text-cyan-400',
+    MALICIOUS: 'text-red-400',
+    SUSPICIOUS: 'text-yellow-400',
+  }
 
   return (
     <div className="bg-[#020204] border-y border-[#141620] overflow-hidden mb-6">
       <div className="flex items-center">
-        <div className="bg-red-600 px-3 py-1.5 text-xs font-bold text-white shrink-0 z-10">CVE FEED</div>
+        <div className="bg-red-600 px-3 py-1.5 text-[10px] font-bold text-white shrink-0 z-10 tracking-wider">THREAT INTEL</div>
         <div className="overflow-hidden flex-1">
-          <div className="flex gap-8 animate-ticker whitespace-nowrap py-1.5">
-            {[...cves, ...cves].map((cve, i) => (
+          <div className="flex gap-6 animate-ticker whitespace-nowrap py-1.5">
+            {[...items, ...items].map((item, i) => (
               <a
-                key={`${cve.id}-${i}`}
-                href={`https://nvd.nist.gov/vuln/detail/${cve.id}`}
+                key={`${item.id}-${i}`}
+                href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 hover:opacity-80 transition shrink-0"
               >
-                <span className="text-xs font-mono font-bold text-white">{cve.id}</span>
-                <span className={`text-xs font-bold ${scoreColor(cve.score)}`}>{cve.score.toFixed(1)}</span>
-                <span className={`text-xs ${trendColor(cve.trend)}`}>{trendIcon(cve.trend)}</span>
-                <span className="text-xs text-gray-600">{cve.vendor}</span>
-                <span className="text-xs text-gray-500">{cve.desc}</span>
-                <span className="text-gray-800">│</span>
+                <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${typeBadge[item.type]}`}>{item.type}</span>
+                <span className="text-xs font-mono font-bold text-white">{item.id}</span>
+                <span className={`text-[10px] font-bold ${sevColor[item.severity] || 'text-gray-400'}`}>{item.severity}</span>
+                <span className="text-xs text-gray-500">{item.label}</span>
+                <span className="text-[10px] text-gray-700">{item.detail}</span>
+                <span className="text-[#141620]">│</span>
               </a>
             ))}
           </div>
@@ -352,8 +373,8 @@ export default function DashboardPage() {
         </div>
       </nav>
 
-      {/* CVE Ticker */}
-      <CVETicker />
+      {/* Intel Ticker */}
+      <IntelTicker />
 
       <div className="p-6">
         {/* Threat Level */}

@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === 'production'
+
 const nextConfig: NextConfig = {
-  output: "export",
-  basePath: "/anomaly-grid",
-  assetPrefix: "/anomaly-grid/",
+  output: isProd ? "export" : undefined,
+  basePath: isProd ? "/anomaly-grid" : "",
+  assetPrefix: isProd ? "/anomaly-grid/" : undefined,
   images: {
     unoptimized: true,
   },

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Shield, Activity, AlertTriangle, Radio, Eye, Wifi, X, ExternalLink, MapPin, Search, Crosshair, Fingerprint, Zap, Target, Lock, Skull } from 'lucide-react'
+import { Shield, Activity, AlertTriangle, Radio, Eye, Wifi, X, ExternalLink, MapPin, Search, Crosshair, Fingerprint, Zap, Target, Lock, Skull, Database } from 'lucide-react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
@@ -333,6 +333,9 @@ export default function DashboardPage() {
           <span className="text-xs text-gray-600 ml-2">/ Threat Operations Center</span>
         </div>
         <div className="flex items-center gap-6">
+          <Link href="/dashboard/intel" className="text-xs text-gray-400 hover:text-cyan-400 flex items-center gap-1 transition">
+            <Database className="w-3 h-3" /> Intel
+          </Link>
           <Link href="/dashboard/stig-scanner" className="text-xs text-gray-400 hover:text-blue-400 flex items-center gap-1 transition">
             <Search className="w-3 h-3" /> STIG Scanner
           </Link>
